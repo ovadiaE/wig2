@@ -1,13 +1,17 @@
 import talib
 import pandas as pd
 from pandas_datareader import data as pdr
+from datetime import date, datetime, timedelta
 
 def get_pattern_names ():
+    current_date = date.today()
+    thirty_days_prior = datetime.today() - timedelta(days=30)
+    
     candle_names_and_values = []
     
     candle_names = talib.get_function_groups()['Pattern Recognition']
 
-    gold_data = pdr.get_data_yahoo('GOLD','2022-01-01','2022-01-31')
+    gold_data = pdr.get_data_yahoo('GOLD', str(thirty_days_prior), str(current_date))
 
     op = gold_data['Open']
     hi = gold_data['High']

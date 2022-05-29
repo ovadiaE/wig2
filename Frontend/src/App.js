@@ -1,20 +1,28 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import particlesJson from "./particles.json";
+import axios from 'axios'
 
 function App() {
+
+    const [particleOject, setParticleObject] = useState('')
+    
     const particlesInit = useCallback(main => {
         loadFull(main);
     }, [])
 
-    // fetch request to my end point
-    // store returned json object into state
-    //set that state into options object 
+    useEffect(() => {
+       const fetchParticles = async() => {
+           const res = await axios.get('http://127.0.0.1:5000')
+          setParticleObject(res.data)
+       }
+       fetchParticles()
+    },[])
 
     return (
         <div className="App">
-            <Particles options={particlesJson} init={particlesInit}/>
+            <Particles options={particleOject} init={particlesInit}/>
         </div>
     );
 }
